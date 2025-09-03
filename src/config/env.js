@@ -45,6 +45,19 @@ export const validateEnv = () => {
   return missing.length === 0
 }
 
+// Build-time validation (only warns, doesn't break build)
+export const validateBuildEnv = () => {
+  const missing = requiredEnvVars.filter(key => !env[key])
+  
+  if (missing.length > 0) {
+    console.warn('⚠️  Build Warning: Missing environment variables:', missing)
+    console.warn('   These should be configured in your deployment environment.')
+    console.warn('   The app will still build but may not function correctly without them.')
+  }
+  
+  return missing.length === 0
+}
+
 // Export individual configs for convenience
 export const supabaseConfig = {
   url: env.SUPABASE_URL,

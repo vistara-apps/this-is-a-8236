@@ -9,6 +9,10 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
+  define: {
+    // Ensure process.env is available for build-time checks
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+  },
   build: {
     rollupOptions: {
       output: {
