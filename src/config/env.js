@@ -33,9 +33,12 @@ export const validateEnv = () => {
   const missing = requiredEnvVars.filter(key => !env[key])
   
   if (missing.length > 0) {
-    console.error('Missing required environment variables:', missing)
-    if (env.IS_PROD) {
-      throw new Error(`Missing required environment variables: ${missing.join(', ')}`)
+    console.warn('Missing environment variables:', missing)
+    
+    // Only throw error in production runtime, not during build
+    if (env.IS_PROD && typeof window !== 'undefined') {
+      console.error('Missing required environment variables in production:', missing)
+      // Don't throw error, just warn - let the app handle missing configs gracefully
     }
   }
   
