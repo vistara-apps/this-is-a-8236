@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ main, master ]
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,9 +32,17 @@ jobs:
       env:
         NODE_OPTIONS: --max-old-space-size=4096
         
+    - name: Check Vercel secrets
+      id: check-secrets
+      run: |
+        if [ -n "${{ secrets.VERCEL_TOKEN }}" ] && [ -n "${{ secrets.VERCEL_ORG_ID }}" ] && [ -n "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
+          echo "vercel-configured=true" >> $GITHUB_OUTPUT
+        else
+          echo "vercel-configured=false" >> $GITHUB_OUTPUT
+        fi
+        
     - name: Deploy to Vercel (Production)
-      if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && secrets.VERCEL_TOKEN != ''
-      continue-on-error: true
+      if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && steps.check-secrets.outputs.vercel-configured == 'true'
       uses: amondnet/vercel-action@v25
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -38,8 +51,7 @@ jobs:
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         
     - name: Deploy to Vercel (Preview)
-      if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master' && secrets.VERCEL_TOKEN != ''
-      continue-on-error: true
+      if: (github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master') && steps.check-secrets.outputs.vercel-configured == 'true'
       uses: amondnet/vercel-action@v25
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -48,7 +60,7 @@ jobs:
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         
     - name: Comment PR with deployment URL
-      if: github.event_name == 'pull_request' && secrets.VERCEL_TOKEN != ''
+      if: github.event_name == 'pull_request' && steps.check-secrets.outputs.vercel-configured == 'true'
       continue-on-error: true
       uses: actions/github-script@v7
       with:
@@ -72,22 +84,25 @@ jobs:
           
     - name: Build Success Notification
       if: github.event_name == 'pull_request'
-      continue-on-error: true
       uses: actions/github-script@v7
       with:
         script: |
-          try {
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `✅ **Build Successful!**
-              \n\nThe application has been built successfully. To enable automatic deployments, configure the following secrets in your repository:
-              \n- \`VERCEL_TOKEN\`
-              \n- \`VERCEL_ORG_ID\`  
-              \n- \`VERCEL_PROJECT_ID\`
-              \n\nYou can also deploy manually by running \`npm run build\` and serving the \`dist\` folder.`
-            });
-          } catch (error) {
-            console.log('Could not comment on PR:', error.message);
+          const vercelConfigured = '${{ steps.check-secrets.outputs.vercel-configured }}' === 'true';
+          let message = `✅ **Build Successful!**\n\nThe application has been built successfully.`;
+          
+          if (vercelConfigured) {
+            message += `\n\n🚀 Vercel deployment is configured and will be attempted.`;
+          } else {
+            message += `\n\n⚙️ To enable automatic deployments, configure the following secrets in your repository:
+            \n- \`VERCEL_TOKEN\`
+            \n- \`VERCEL_ORG_ID\`  
+            \n- \`VERCEL_PROJECT_ID\`
+            \n\nYou can also deploy manually by running \`npm run build\` and serving the \`dist\` folder.`;
           }
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: message
+          });
