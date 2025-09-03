@@ -199,9 +199,9 @@ const TaskInputForm = ({ onClose, onSubmit }) => {
                     Output Length
                   </label>
                   <select className="w-full bg-dark-surface border border-gray-600 rounded px-3 py-2 text-dark-text text-sm">
-                    <option>Short (< 100 words)</option>
+                    <option>Short (&lt; 100 words)</option>
                     <option>Medium (100-500 words)</option>
-                    <option>Long (> 500 words)</option>
+                    <option>Long (&gt; 500 words)</option>
                   </select>
                 </div>
                 <div>
