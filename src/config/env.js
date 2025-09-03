@@ -1,0 +1,63 @@
+// Environment configuration
+export const env = {
+  // Supabase
+  SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
+  SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
+  
+  // OpenAI
+  OPENAI_API_KEY: import.meta.env.VITE_OPENAI_API_KEY,
+  
+  // Stripe
+  STRIPE_PUBLISHABLE_KEY: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY,
+  
+  // App
+  APP_URL: import.meta.env.VITE_APP_URL || 'http://localhost:5173',
+  APP_NAME: import.meta.env.VITE_APP_NAME || 'Task Weaver AI',
+  APP_VERSION: import.meta.env.VITE_APP_VERSION || '1.0.0',
+  
+  // Environment
+  NODE_ENV: import.meta.env.NODE_ENV || 'development',
+  IS_DEV: import.meta.env.NODE_ENV === 'development',
+  IS_PROD: import.meta.env.NODE_ENV === 'production',
+}
+
+// Validate required environment variables
+const requiredEnvVars = [
+  'SUPABASE_URL',
+  'SUPABASE_ANON_KEY',
+  'OPENAI_API_KEY',
+  'STRIPE_PUBLISHABLE_KEY'
+]
+
+export const validateEnv = () => {
+  const missing = requiredEnvVars.filter(key => !env[key])
+  
+  if (missing.length > 0) {
+    console.error('Missing required environment variables:', missing)
+    if (env.IS_PROD) {
+      throw new Error(`Missing required environment variables: ${missing.join(', ')}`)
+    }
+  }
+  
+  return missing.length === 0
+}
+
+// Export individual configs for convenience
+export const supabaseConfig = {
+  url: env.SUPABASE_URL,
+  anonKey: env.SUPABASE_ANON_KEY,
+}
+
+export const openaiConfig = {
+  apiKey: env.OPENAI_API_KEY,
+}
+
+export const stripeConfig = {
+  publishableKey: env.STRIPE_PUBLISHABLE_KEY,
+}
+
+export const appConfig = {
+  url: env.APP_URL,
+  name: env.APP_NAME,
+  version: env.APP_VERSION,
+}
