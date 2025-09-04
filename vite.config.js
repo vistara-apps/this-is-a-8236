@@ -11,7 +11,9 @@ export default defineConfig({
   },
   define: {
     // Ensure process.env is available for build-time checks
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    // Prevent build errors from undefined globals
+    global: 'globalThis'
   },
   build: {
     rollupOptions: {
