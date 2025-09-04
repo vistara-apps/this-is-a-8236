@@ -1,46 +1,62 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       colors: {
-        bg: 'hsl(210 40% 96%)',
-        accent: 'hsl(190 80% 50%)',
-        primary: 'hsl(240 78% 55%)',
-        surface: 'hsl(0 0% 100%)',
-        'text-primary': 'hsl(210 40% 20%)',
-        'text-secondary': 'hsl(210 40% 40%)',
-        'dark-bg': 'hsl(220 30% 8%)',
-        'dark-surface': 'hsl(220 30% 12%)',
-        'dark-card': 'hsl(220 30% 15%)',
-        'dark-text': 'hsl(210 40% 90%)',
-        'dark-text-secondary': 'hsl(210 40% 70%)',
+        // Base colors
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        
+        // Card colors
+        card: 'hsl(var(--card))',
+        'card-foreground': 'hsl(var(--card-foreground))',
+        
+        // Primary colors
+        primary: 'hsl(var(--primary))',
+        'primary-foreground': 'hsl(var(--primary-foreground))',
+        
+        // Secondary colors
+        secondary: 'hsl(var(--secondary))',
+        'secondary-foreground': 'hsl(var(--secondary-foreground))',
+        
+        // Muted colors
+        muted: 'hsl(var(--muted))',
+        'muted-foreground': 'hsl(var(--muted-foreground))',
+        
+        // Accent colors
+        accent: 'hsl(var(--accent))',
+        'accent-foreground': 'hsl(var(--accent-foreground))',
+        
+        // Destructive colors
+        destructive: 'hsl(var(--destructive))',
+        'destructive-foreground': 'hsl(var(--destructive-foreground))',
+        
+        // Border and input
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        
+        // Base brand colors
+        'base-blue': '#0052FF',
+        'base-light-blue': '#E6F3FF',
       },
       borderRadius: {
-        'lg': '16px',
-        'md': '10px',
-        'sm': '6px',
-        'xl': '24px',
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
-      spacing: {
-        'xs': '4px',
-        'sm': '8px',
-        'md': '12px',
-        'lg': '16px',
-        'xl': '24px',
-        'xxl': '32px',
-      },
-      boxShadow: {
-        'card': '0 4px 12px hsla(210, 40%, 10%, 0.08)',
-        'modal': '0 12px 32px hsla(210, 40%, 10%, 0.16)',
-        'dark-card': '0 4px 12px hsla(220, 30%, 0%, 0.3)',
+      fontFamily: {
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       animation: {
-        'fade-in': 'fadeIn 250ms cubic-bezier(0.22,1,0.36,1)',
-        'slide-up': 'slideUp 250ms cubic-bezier(0.22,1,0.36,1)',
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         fadeIn: {
@@ -48,8 +64,8 @@ export default {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
       },
     },
