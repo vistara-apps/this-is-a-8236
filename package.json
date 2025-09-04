@@ -11,6 +11,7 @@
     "dev": "vite",
     "build": "npm run type-check && vite build --mode production --logLevel info",
     "build:ci": "npm ci && npm run build",
+    "build:fast": "vite build --mode production",
     "build:verify": "npm run build && npm run verify-build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
@@ -18,7 +19,8 @@
     "lint": "echo 'Linting skipped - no linter configured'",
     "test": "echo 'Tests skipped - no test framework configured'",
     "build:analyze": "npm run build && npx vite-bundle-analyzer dist/stats.html",
-    "clean": "rm -rf dist node_modules/.vite"
+    "clean": "rm -rf dist node_modules/.vite",
+    "postinstall": "echo 'Dependencies installed successfully'"
   },
   "dependencies": {
     "@stripe/stripe-js": "^2.1.11",

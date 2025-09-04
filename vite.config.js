@@ -66,7 +66,10 @@ export default defineConfig({
     minify: 'terser',
     target: 'es2020',
     // Ensure consistent builds
-    emptyOutDir: true
+    emptyOutDir: true,
+    // Additional build optimizations
+    cssCodeSplit: true,
+    assetsInlineLimit: 4096
   },
   optimizeDeps: {
     include: [
