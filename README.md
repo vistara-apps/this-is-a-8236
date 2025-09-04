@@ -82,6 +82,11 @@ Build for production:
 npm run build
 ```
 
+Build with verification:
+```bash
+npm run build:verify
+```
+
 Preview the production build:
 ```bash
 npm run preview
@@ -90,6 +95,11 @@ npm run preview
 Type check:
 ```bash
 npm run type-check
+```
+
+Verify build output:
+```bash
+npm run verify-build
 ```
 
 ## 📁 Project Structure

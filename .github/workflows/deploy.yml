@@ -38,6 +38,19 @@ jobs:
         VITE_OPENAI_API_KEY: placeholder_key
         VITE_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
         
+    - name: Verify build output
+      run: |
+        if [ ! -d "dist" ]; then
+          echo "❌ Build failed: dist directory not found"
+          exit 1
+        fi
+        if [ ! -f "dist/index.html" ]; then
+          echo "❌ Build failed: index.html not found"
+          exit 1
+        fi
+        echo "✅ Build verification successful"
+        ls -la dist/
+        
     - name: Check Vercel secrets
       id: check-secrets
       run: |
