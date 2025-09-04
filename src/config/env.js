@@ -1,14 +1,14 @@
 // Environment configuration
 export const env = {
   // Supabase
-  SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
-  SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
+  SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || '',
+  SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
   
   // OpenAI
-  OPENAI_API_KEY: import.meta.env.VITE_OPENAI_API_KEY,
+  OPENAI_API_KEY: import.meta.env.VITE_OPENAI_API_KEY || '',
   
   // Stripe
-  STRIPE_PUBLISHABLE_KEY: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY,
+  STRIPE_PUBLISHABLE_KEY: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '',
   
   // App
   APP_URL: import.meta.env.VITE_APP_URL || 'http://localhost:5173',
