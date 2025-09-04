@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run type-check && vite build --mode production --logLevel info",
+    "build:ci": "npm ci && npm run build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "lint": "echo 'Linting skipped - no linter configured'",

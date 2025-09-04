@@ -38,7 +38,9 @@ export default defineConfig({
     // Prevent build errors from undefined globals
     global: 'globalThis',
     // Fix potential issues with Node.js globals in browser
-    'process.env': {}
+    'process.env': {},
+    // Define environment variables for build-time access
+    __DEV__: process.env.NODE_ENV === 'development'
   },
   build: {
     rollupOptions: {
@@ -52,12 +54,19 @@ export default defineConfig({
           supabase: ['@supabase/supabase-js'],
           utils: ['date-fns', 'uuid', 'zustand']
         }
+      },
+      // Handle external dependencies that might cause build issues
+      external: (id) => {
+        // Don't externalize these dependencies in the build
+        return false
       }
     },
     chunkSizeWarningLimit: 1000,
     sourcemap: false,
     minify: 'terser',
-    target: 'es2020'
+    target: 'es2020',
+    // Ensure consistent builds
+    emptyOutDir: true
   },
   optimizeDeps: {
     include: [
