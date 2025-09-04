@@ -17,7 +17,11 @@ import { validateEnv } from './config/env'
 function App() {
   // Validate environment variables on app start
   React.useEffect(() => {
-    validateEnv()
+    try {
+      validateEnv()
+    } catch (error) {
+      console.warn('Environment validation warning:', error)
+    }
   }, [])
 
   return (

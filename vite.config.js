@@ -3,7 +3,30 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // Custom plugin to validate build environment
+    {
+      name: 'validate-build-env',
+      buildStart() {
+        // Only warn about missing env vars, don't fail the build
+        const requiredVars = [
+          'VITE_SUPABASE_URL',
+          'VITE_SUPABASE_ANON_KEY', 
+          'VITE_OPENAI_API_KEY',
+          'VITE_STRIPE_PUBLISHABLE_KEY'
+        ]
+        
+        const missing = requiredVars.filter(key => !process.env[key])
+        
+        if (missing.length > 0) {
+          console.warn('⚠️  Build Warning: Missing environment variables:', missing)
+          console.warn('   These should be configured in your deployment environment.')
+          console.warn('   The app will still build but may not function correctly without them.')
+        }
+      }
+    }
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
