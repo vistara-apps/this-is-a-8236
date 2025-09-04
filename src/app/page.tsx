@@ -73,7 +73,7 @@ export default function Home() {
               <h3 className="text-lg font-semibold">OnchainKit</h3>
             </div>
             <p className="text-muted-foreground">
-              Powered by Coinbase's OnchainKit for reliable web3 components
+              Powered by Coinbase&apos;s OnchainKit for reliable web3 components
             </p>
           </div>
         </div>
