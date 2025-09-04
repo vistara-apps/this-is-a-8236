@@ -36,7 +36,9 @@ export default defineConfig({
     // Ensure process.env is available for build-time checks
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     // Prevent build errors from undefined globals
-    global: 'globalThis'
+    global: 'globalThis',
+    // Fix potential issues with Node.js globals in browser
+    'process.env': {}
   },
   build: {
     rollupOptions: {
@@ -70,6 +72,7 @@ export default defineConfig({
       'date-fns',
       'uuid',
       'zustand'
-    ]
+    ],
+    exclude: ['openai']
   }
 })
